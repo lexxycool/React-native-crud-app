@@ -15,7 +15,7 @@ export default function LoginScreen({navigation}) {
     }
 
     const onFooterLinkPress = () => {
-        navigation.navigate('Registration')
+        navigation.navigate('Registration');
     }
 
     return (
@@ -23,6 +23,7 @@ export default function LoginScreen({navigation}) {
 				<KeyboardAwareScrollView
 					style={styles.keybaorad}
 					keyboardShouldPersistTaps='always'
+					
 				>
 					<Image
 						source={require('../../../assets/icon.png')}
@@ -58,7 +59,7 @@ export default function LoginScreen({navigation}) {
                     
                     <View style={styles.footerView}>
                         <Text style={styles.footerText}>Don't have an account?
-                            <Text style={styles.footerLink} onPress={onLoginPress}>Sign up</Text>
+                            <Text style={styles.footerLink} onPress={onFooterLinkPress}>Sign up</Text>
                         </Text>
                     </View>
 
