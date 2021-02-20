@@ -7,10 +7,18 @@ import { firebase } from '../../firebase/config';
 
 
 export default function RegistrationScreen({ navigation }) {
+
 	const [fullName, setFullName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [confirmPassword, setConfirmPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    
+    const clearField = () => {
+        setFullName('');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+    }
 
 	const onRegisterPress = () => {
         if (password !== confirmPassword) {
@@ -18,33 +26,42 @@ export default function RegistrationScreen({ navigation }) {
             return
         }
 
-        firebase
-            .auth()
-            .createUserWithEmailAndPassword(email, password)
-            .then(response => {
-                const uid = response.user.uid
-                const data = {
-                    id: uid,
-                        email,
-                        fullName,
-                };
-                const usersRef = firebase.firestore().collection('users')
-                usersRef
-                    .doc(uid)
-                    .set(data)
-                    .then(() => {
-                      navigation.navigate('Home', {user: data})  
-                    })
-                    .catch(error => {
-                        alert(error)
-                    });
+            firebase
+                .auth()
+                .createUserWithEmailAndPassword(email, password)
+                .then(response => {
+                    const uid = response.user.uid
+                    const data = {
+                        id: uid,
+                            email,
+                            fullName,
+                    };
+                    const usersRef = firebase.firestore().collection('users')
+                    usersRef
+                        .doc(uid)
+                        .set(data)
+                        .then(() => {
+                            navigation.navigate('Home', {user: data})  
+                        })
 
-            })
-            .catch(error => {
-                alert(error)
-            });
+                        .catch(error => {
+                            alert(error)
+                        });
+                    
+                    if(usersRef){
+                        alert('account created');
+                        clearField();
+                    };
 
-    }
+
+                })
+                .catch(error => {
+                    alert(error)
+                });
+        
+        
+
+    };
 
 	const backToLogin = () => {
 		navigation.navigate('Login');
@@ -68,7 +85,7 @@ export default function RegistrationScreen({ navigation }) {
 					value={fullName}
 					onChangeText={(text) => setFullName(text)}
 					underlineColorAndroid='transparent'
-					autoCapitalize='none'
+					autoCapitalize='words'
 				/>
 
 				<TextInput
@@ -87,6 +104,7 @@ export default function RegistrationScreen({ navigation }) {
 					placeholderTextColor='#aaa'
 					value={password}
 					onChangeText={(text) => setPassword(text)}
+					secureTextEntry={true}
 					underlineColorAndroid='transparent'
 					autoCapitalize='none'
 				/>
@@ -97,6 +115,7 @@ export default function RegistrationScreen({ navigation }) {
 					placeholderTextColor='#aaa'
 					value={confirmPassword}
 					onChangeText={(text) => setConfirmPassword(text)}
+					secureTextEntry={true}
 					underlineColorAndroid='transparent'
 					autoCapitalize='none'
 				/>
