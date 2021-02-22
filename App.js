@@ -6,8 +6,6 @@ import { StyleSheet } from 'react-native';
 import { LoginScreen,RegistrationScreen, HomeScreen } from './src/screens';
 import { decode, encode } from 'base-64';
 import { firebase }  from './src/firebase/config';
-import { set } from 'react-native-reanimated';
-
 
 
 if (!global.btoa) { global.btoa = encode }
@@ -20,15 +18,15 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
- /* if (loading) {
+  if (loading) {
 	  return (
 		  <></>
 	  )
-  }  
+  } 
 
   useEffect(() => {
 	const usersRef = firebase.firestore().collection('users');
-	firebase.auth().onAuthStateChanged(user =>{
+	firebase.auth().onAuthStateChanged(user => {
 		if(user){
 			usersRef
 				.doc(user.uid)
@@ -47,14 +45,14 @@ export default function App() {
 	});
 
 },[]);
-*/
+
 
   return (
 		<NavigationContainer>
 			<Stack.Navigator>
 				{user ? (
 					<Stack.Screen name='Home'>
-						{(props) => <HomeScreen {...props} extraData={user} />}
+						{props => <HomeScreen {...props} extraData={user} />}
 					</Stack.Screen>
 				) : (
 					<>
@@ -78,4 +76,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+
 });
